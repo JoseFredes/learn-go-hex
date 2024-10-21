@@ -1,5 +1,11 @@
 package domain
 
+import "regexp"
+
+const (
+	EMAIL_REGEX = `^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`
+)
+
 type User struct {
 	ID int
 	Name string
@@ -21,5 +27,10 @@ func (u *User) UpdateLastName(lastName string) string {
 func (u *User) UpdateEmail(email string) string {
 	u.Email = email
 	return u.Email
+}
+
+func (u *User) ValidateEmail() bool {
+	pattern := regexp.MustCompile(EMAIL_REGEX)
+	return pattern.MatchString(u.Email)
 }
 
