@@ -34,3 +34,6 @@ func (u *User) ValidateEmail() bool {
 	return pattern.MatchString(u.Email)
 }
 
+func NewUser(id int, name string, lastName string, email string) User {
+	return User{ID: id, Name: name, LastName: lastName, Email: email}
+}
