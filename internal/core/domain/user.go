@@ -1,39 +1,37 @@
 package domain
 
-import "regexp"
+import (
+	"errors"
+	"regexp"
+)
 
 const (
 	EMAIL_REGEX = `^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`
+	NAME_REGEX  = `^[a-zA-Z]+$`
 )
 
 type User struct {
-	ID int
-	Name string
+	ID       int
+	Name     string
 	LastName string
-	Email string
+	Email    string
 }
 
+func (u User) ValitateNewUser() error {
+	emailPattern := regexp.MustCompile(EMAIL_REGEX)
+	namePattern := regexp.MustCompile(NAME_REGEX)
 
-func (u *User) UpdateName(name string) string {
-	u.Name = name
-	return u.Name
-}
+	if !emailPattern.MatchString(u.Email) {
+		return errors.New("Invalid email")
+	}
 
-func (u *User) UpdateLastName(lastName string) string {
-	u.LastName = lastName
-	return u.LastName
-}
+	if !namePattern.MatchString(u.Name) {
+		return errors.New("Invalid name")
+	}
 
-func (u *User) UpdateEmail(email string) string {
-	u.Email = email
-	return u.Email
-}
+	if !namePattern.MatchString(u.LastName) {
+		return errors.New("Invalid last name")
+	}
 
-func (u *User) ValidateEmail() bool {
-	pattern := regexp.MustCompile(EMAIL_REGEX)
-	return pattern.MatchString(u.Email)
-}
-
-func NewUser(id int, name string, lastName string, email string) User {
-	return User{ID: id, Name: name, LastName: lastName, Email: email}
+	return nil
 }
